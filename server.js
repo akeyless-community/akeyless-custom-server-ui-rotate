@@ -49,7 +49,7 @@ async function checkChromium() {
         const browser = await puppeteer.launch({
             executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
-            headless: 'new'
+            headless: true
         });
         await browser.close();
         chromiumReady = true;
@@ -223,7 +223,7 @@ async function executeRecording(recording) {
     const browser = await puppeteer.launch({
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        headless: 'new'
+        headless: true
     });
     const page = await browser.newPage();
 
