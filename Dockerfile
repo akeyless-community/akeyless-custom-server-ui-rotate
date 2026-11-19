@@ -1,5 +1,8 @@
 # Build stage
-FROM node:18-slim AS builder
+FROM node:22-bookworm-slim AS builder
+
+# Chromium is installed from apt in the production stage
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 
 # Set working directory
 WORKDIR /app
@@ -8,16 +11,16 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Copy source code
 COPY . .
 
 # Production stage
-FROM node:18-slim
+FROM node:22-bookworm-slim
 
 # We don't need the standalone Chromium
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 
 # Install dependencies and Chromium
 RUN apt-get update && apt-get install -y \
